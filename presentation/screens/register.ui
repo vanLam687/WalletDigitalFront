@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>358</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    font-family: Segoe UI, Arial;
+}</string>
+  </property>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>240</y>
+     <width>241</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout"/>
+  </widget>
+  <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>10</y>
+     <width>241</width>
+     <height>236</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="lblNameUserReg">
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+    background-color: transparent;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+}</string>
+      </property>
+      <property name="text">
+       <string>Nombre de usuario:</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="lineNameUserReg">
+      <property name="styleSheet">
+       <string notr="true">QLineEdit {
+    background-color: #2d2d2d;
+    border: 2px solid #404040;
+    border-radius: 6px;
+    padding: 12px;
+    color: #ffffff;
+    font-size: 14px;
+    selection-background-color: #404040;
+}
+QLineEdit:focus {
+    border: 2px solid #666666;
+    background-color: #252525;
+}
+</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+    background-color: transparent;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+}</string>
+      </property>
+      <property name="text">
+       <string>Contraseña:</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="lineContraReg">
+      <property name="styleSheet">
+       <string notr="true">QLineEdit {
+    background-color: #2d2d2d;
+    border: 2px solid #404040;
+    border-radius: 6px;
+    padding: 12px;
+    color: #ffffff;
+    font-size: 14px;
+    selection-background-color: #404040;
+}
+QLineEdit:focus {
+    border: 2px solid #666666;
+    background-color: #252525;
+}
+</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="lblContra2">
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+    background-color: transparent;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+}</string>
+      </property>
+      <property name="text">
+       <string>Reingrese la contraseña:</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="lineContraReg2">
+      <property name="styleSheet">
+       <string notr="true">QLineEdit {
+    background-color: #2d2d2d;
+    border: 2px solid #404040;
+    border-radius: 6px;
+    padding: 12px;
+    color: #ffffff;
+    font-size: 14px;
+    selection-background-color: #404040;
+}
+QLineEdit:focus {
+    border: 2px solid #666666;
+    background-color: #252525;
+}
+</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="btnRegistrarse">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>270</y>
+     <width>239</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    background-color: #404040;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    min-width: 100px;
+}
+QPushButton:hover {
+    background-color: #555555;
+}
+QPushButton:pressed {
+    background-color: #333333;
+}</string>
+   </property>
+   <property name="text">
+    <string>Registro</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
