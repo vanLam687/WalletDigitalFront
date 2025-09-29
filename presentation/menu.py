@@ -1,6 +1,7 @@
-from PyQt6.QtWidgets import QWidget, QMessageBox
+from PyQt6.QtWidgets import QWidget, QMessageBox, QMainWindow, QDialog
 from presentation.screens.login import Ui_Form as LoginUI
 from presentation.screens.register import Ui_Form as RegisterUI
+from presentation.screens.menuTransacciones import Ui_MainWindow as TransactionUI
 from business.users_logic import UserLogic
 
 class LoginWindow(QWidget):
@@ -22,6 +23,11 @@ class LoginWindow(QWidget):
         self.register_window = RegisterWindow(self)
         self.register_window.show()
         self.hide()
+    
+    def open_transaction_menu(self, username):
+        self.transaction_window = TransactionWindow(username, self)
+        self.transaction_window.show()
+        self.hide()
 
     def login(self):
         username = self.ui.lineNameUser.text().strip().lower()
@@ -34,7 +40,7 @@ class LoginWindow(QWidget):
         try:
             logic = UserLogic(username, password)
             logic.login_user()
-            QMessageBox.information(self, "Éxito", f"Bienvenido/a, {username}")
+            self.open_transaction_menu(username)
 
         except ValueError as e:
             QMessageBox.critical(self, "Error", f"ERROR: {str(e)}")
@@ -45,7 +51,7 @@ class LoginWindow(QWidget):
             else:
                 self.close()
 
-class RegisterWindow(QWidget):
+class RegisterWindow(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = RegisterUI()
@@ -91,3 +97,23 @@ class RegisterWindow(QWidget):
                 self.ui.lineContraReg.clear()
                 self.ui.lineContraReg2.clear()
                 self.ui.lineNameUserReg.setFocus()
+
+class TransactionWindow(QMainWindow):
+    def __init__(self, username, parent=None):
+        super().__init__()
+        self.ui = TransactionUI()
+        self.ui.setupUi(self)
+        self.username = username
+        self.parent_window = parent
+        
+        self.setWindowTitle(f"Menú de Transacciones - {self.username}")
+        
+        self.ui.btnSalir.clicked.connect(self.cerrar_sesion)
+
+    def cerrar_sesion(self):
+        self.close()
+    
+    def closeEvent(self, event):
+        if self.parent_window:
+            self.parent_window.show()
+        event.accept()
