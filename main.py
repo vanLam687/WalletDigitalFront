@@ -1,5 +1,9 @@
-from presentation.menu import Menu
+import sys
+from PyQt6.QtWidgets import QApplication
+from presentation.menu import LoginWindow   
 
 if __name__ == "__main__":
-    menu = Menu()
-    menu.menu()
+    app = QApplication(sys.argv)
+    login_window = LoginWindow()
+    login_window.show()
+    sys.exit(app.exec())

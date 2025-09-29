@@ -12,43 +12,127 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(400, 300)
+        Form.resize(400, 357)
+        Form.setStyleSheet("QWidget {\n"
+"    background-color: #1a1a1a;\n"
+"    color: #ffffff;\n"
+"    font-family: Segoe UI, Arial;\n"
+"}")
         self.horizontalLayoutWidget = QtWidgets.QWidget(parent=Form)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(90, 200, 241, 41))
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(90, 240, 241, 16))
         self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.btnRegistrarse = QtWidgets.QPushButton(parent=self.horizontalLayoutWidget)
-        self.btnRegistrarse.setObjectName("btnRegistrarse")
-        self.horizontalLayout.addWidget(self.btnRegistrarse)
         self.verticalLayoutWidget = QtWidgets.QWidget(parent=Form)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(90, 40, 241, 146))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(90, 10, 241, 236))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.lblNameUserReg = QtWidgets.QLabel(parent=self.verticalLayoutWidget)
+        self.lblNameUserReg.setStyleSheet("QLabel {\n"
+"    background-color: transparent;\n"
+"    color: #ffffff;\n"
+"    font-size: 14px;\n"
+"    font-weight: bold;\n"
+"    border: none;\n"
+"}")
         self.lblNameUserReg.setObjectName("lblNameUserReg")
         self.verticalLayout.addWidget(self.lblNameUserReg)
         self.lineNameUserReg = QtWidgets.QLineEdit(parent=self.verticalLayoutWidget)
+        self.lineNameUserReg.setStyleSheet("QLineEdit {\n"
+"    background-color: #2d2d2d;\n"
+"    border: 2px solid #404040;\n"
+"    border-radius: 6px;\n"
+"    padding: 12px;\n"
+"    color: #ffffff;\n"
+"    font-size: 14px;\n"
+"    selection-background-color: #404040;\n"
+"}\n"
+"QLineEdit:focus {\n"
+"    border: 2px solid #666666;\n"
+"    background-color: #252525;\n"
+"}\n"
+"")
         self.lineNameUserReg.setText("")
         self.lineNameUserReg.setObjectName("lineNameUserReg")
         self.verticalLayout.addWidget(self.lineNameUserReg)
         self.label = QtWidgets.QLabel(parent=self.verticalLayoutWidget)
+        self.label.setStyleSheet("QLabel {\n"
+"    background-color: transparent;\n"
+"    color: #ffffff;\n"
+"    font-size: 14px;\n"
+"    font-weight: bold;\n"
+"    border: none;\n"
+"}")
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
         self.lineContraReg = QtWidgets.QLineEdit(parent=self.verticalLayoutWidget)
+        self.lineContraReg.setStyleSheet("QLineEdit {\n"
+"    background-color: #2d2d2d;\n"
+"    border: 2px solid #404040;\n"
+"    border-radius: 6px;\n"
+"    padding: 12px;\n"
+"    color: #ffffff;\n"
+"    font-size: 14px;\n"
+"    selection-background-color: #404040;\n"
+"}\n"
+"QLineEdit:focus {\n"
+"    border: 2px solid #666666;\n"
+"    background-color: #252525;\n"
+"}\n"
+"")
         self.lineContraReg.setText("")
         self.lineContraReg.setObjectName("lineContraReg")
         self.verticalLayout.addWidget(self.lineContraReg)
         self.lblContra2 = QtWidgets.QLabel(parent=self.verticalLayoutWidget)
+        self.lblContra2.setStyleSheet("QLabel {\n"
+"    background-color: transparent;\n"
+"    color: #ffffff;\n"
+"    font-size: 14px;\n"
+"    font-weight: bold;\n"
+"    border: none;\n"
+"}")
         self.lblContra2.setObjectName("lblContra2")
         self.verticalLayout.addWidget(self.lblContra2)
         self.lineContraReg2 = QtWidgets.QLineEdit(parent=self.verticalLayoutWidget)
+        self.lineContraReg2.setStyleSheet("QLineEdit {\n"
+"    background-color: #2d2d2d;\n"
+"    border: 2px solid #404040;\n"
+"    border-radius: 6px;\n"
+"    padding: 12px;\n"
+"    color: #ffffff;\n"
+"    font-size: 14px;\n"
+"    selection-background-color: #404040;\n"
+"}\n"
+"QLineEdit:focus {\n"
+"    border: 2px solid #666666;\n"
+"    background-color: #252525;\n"
+"}\n"
+"")
         self.lineContraReg2.setText("")
         self.lineContraReg2.setObjectName("lineContraReg2")
         self.verticalLayout.addWidget(self.lineContraReg2)
+        self.btnRegistrarse = QtWidgets.QPushButton(parent=Form)
+        self.btnRegistrarse.setGeometry(QtCore.QRect(90, 270, 239, 41))
+        self.btnRegistrarse.setStyleSheet("QPushButton {\n"
+"    background-color: #404040;\n"
+"    color: white;\n"
+"    border: none;\n"
+"    border-radius: 8px;\n"
+"    padding: 12px 20px;\n"
+"    font-size: 14px;\n"
+"    font-weight: bold;\n"
+"    min-width: 100px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: #555555;\n"
+"}\n"
+"QPushButton:pressed {\n"
+"    background-color: #333333;\n"
+"}")
+        self.btnRegistrarse.setObjectName("btnRegistrarse")
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -56,7 +140,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.btnRegistrarse.setText(_translate("Form", "Registro"))
         self.lblNameUserReg.setText(_translate("Form", "Nombre de usuario:"))
         self.label.setText(_translate("Form", "Contraseña:"))
         self.lblContra2.setText(_translate("Form", "Reingrese la contraseña:"))
+        self.btnRegistrarse.setText(_translate("Form", "Registro"))
