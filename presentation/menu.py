@@ -1,22 +1,51 @@
-from PyQt6.QtWidgets import QMainWindow, QDialog, QMessageBox
+from PyQt6.QtWidgets import QWidget, QMessageBox
 from presentation.screens.login import Ui_Form as LoginUI
 from presentation.screens.register import Ui_Form as RegisterUI
 from business.users_logic import UserLogic
 
-class LoginWindow(QMainWindow):
+class LoginWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.ui = LoginUI()
         self.ui.setupUi(self)
         
         self.ui.btnRegistro.clicked.connect(self.open_register)
+        self.ui.btnIngresar.clicked.connect(self.login)
         
+        self.ui.lineContra.setEchoMode(self.ui.lineContra.EchoMode.Password)
+
+    def ask_retry(self, message):
+        reply = QMessageBox.question(self, "Reintentar", message, QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        return reply == QMessageBox.StandardButton.Yes
+    
     def open_register(self):
         self.register_window = RegisterWindow(self)
         self.register_window.show()
         self.hide()
 
-class RegisterWindow(QDialog):
+    def login(self):
+        username = self.ui.lineNameUser.text().strip().lower()
+        password = self.ui.lineContra.text()
+        
+        if not username or not password:
+            QMessageBox.warning(self, "Error", "Por favor complete todos los campos")
+            return
+            
+        try:
+            logic = UserLogic(username, password)
+            logic.login_user()
+            QMessageBox.information(self, "Éxito", f"Bienvenido/a, {username}")
+
+        except ValueError as e:
+            QMessageBox.critical(self, "Error", f"ERROR: {str(e)}")
+            if self.ask_retry("¿Quieres intentarlo nuevamente?"):
+                self.ui.lineNameUser.clear()
+                self.ui.lineContra.clear()
+                self.ui.lineNameUser.setFocus()
+            else:
+                self.close()
+
+class RegisterWindow(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = RegisterUI()
