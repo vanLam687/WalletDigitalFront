@@ -1,9 +1,10 @@
-from PyQt6.QtWidgets import QMainWindow, QDialog, QMessageBox
+from PyQt6.QtWidgets import QMainWindow, QDialog, QMessageBox, QTableWidgetItem, QApplication
 from presentation.screens.menuTransacciones import Ui_MainWindow as TransactionUI
 from presentation.screens.CrearCuenta import Ui_Dialog as CrearCuentaUI
 from presentation.screens.DepositarArs import Ui_Dialog as DepositarArsUI
 from presentation.screens.ComprarMoneda import Ui_Dialog as ComprarMonedaUI
 from presentation.screens.VenderMoneda import Ui_Dialog as VenderMonedaUI
+from presentation.screens.VerCuentas import Ui_Dialog as VerCuentasUI
 from business.transaction_logic import TransactionLogic
 from decimal import Decimal
 
@@ -21,6 +22,8 @@ class TransactionWindow(QMainWindow):
         self.ui.btnDepositar.clicked.connect(self.depositar_ars)
         self.ui.btnComprar.clicked.connect(self.comprar_moneda)
         self.ui.btnVender.clicked.connect(self.vender_moneda)
+        self.ui.btnCuentas.clicked.connect(self.ver_cuentas)
+        self.ui.btnSalir.clicked.connect(self.cerrar_sesion)
 
     def crear_cuenta(self):
         dialog = CrearCuentaDialog()
@@ -95,6 +98,20 @@ class TransactionWindow(QMainWindow):
                 except ValueError as e:
                     QMessageBox.critical(self, "Error", f"ERROR: {str(e)}")
 
+    def ver_cuentas(self):
+        try:
+            cuentas = self.logic.get_accounts()
+            dialog = VerCuentasDialog(cuentas)
+            dialog.exec()
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"ERROR al obtener cuentas: {str(e)}")
+
+    def cerrar_sesion(self):
+        from presentation.menu import LoginWindow 
+        self.close()
+        self.login_window = LoginWindow()
+        self.login_window.show()
+
 class CrearCuentaDialog(QDialog):
     def __init__(self):
         super().__init__()
@@ -134,3 +151,19 @@ class VenderMonedaDialog(QDialog):
         moneda = self.ui.lineMonedaVender.text().strip().upper()
         monto = self.ui.lineMonedaVender_2.text().strip()
         return moneda, monto
+
+class VerCuentasDialog(QDialog):
+    def __init__(self, cuentas):
+        super().__init__()
+        self.ui = VerCuentasUI()
+        self.ui.setupUi(self)
+        self.cargar_cuentas(cuentas)
+        self.ui.btnSalir.clicked.connect(self.close)
+        
+    def cargar_cuentas(self, cuentas):
+        self.ui.tableCuentas.setRowCount(len(cuentas))
+        for row, (moneda, saldo) in enumerate(cuentas.items()):
+            self.ui.tableCuentas.setItem(row, 0, QTableWidgetItem(moneda))
+            self.ui.tableCuentas.setItem(row, 1, QTableWidgetItem(saldo))
+        
+        self.ui.tableCuentas.resizeColumnsToContents()
