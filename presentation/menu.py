@@ -3,6 +3,7 @@ from presentation.screens.login import Ui_Form as LoginUI
 from presentation.screens.register import Ui_Form as RegisterUI
 from presentation.screens.menuTransacciones import Ui_MainWindow as TransactionUI
 from business.users_logic import UserLogic
+from presentation.transaction_menu import TransactionWindow
 
 class LoginWindow(QWidget):
     def __init__(self):
@@ -68,13 +69,3 @@ class RegisterWindow(QDialog):
             
         except ValueError as e:
             QMessageBox.critical(self, "Error", f"ERROR: {str(e)}")
-
-class TransactionWindow(QMainWindow):
-    def __init__(self, username):
-        super().__init__()
-        self.ui = TransactionUI()
-        self.ui.setupUi(self)
-        self.username = username
-        
-        self.setWindowTitle(f"Menú de Transacciones - {self.username}")
-        self.ui.btnSalir.clicked.connect(self.close)
