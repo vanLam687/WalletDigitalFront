@@ -1,42 +1,40 @@
-from presentation.transaction_handler import TransactionHandler
+from PyQt6.QtWidgets import QMainWindow, QDialog, QMessageBox
+from presentation.screens.menuTransacciones import Ui_MainWindow as TransactionUI
+from presentation.screens.CrearCuenta import Ui_Dialog as CrearCuentaUI
+from business.transaction_logic import TransactionLogic
 
-class MenuTransaction:
+class TransactionWindow(QMainWindow):
     def __init__(self, username):
+        super().__init__()
+        self.ui = TransactionUI()
+        self.ui.setupUi(self)
         self.username = username
+        self.logic = TransactionLogic(username)
+        
+        self.setWindowTitle(f"Menú de Transacciones - {self.username}")
+        
+        self.ui.btnCrearCuenta.clicked.connect(self.crear_cuenta)
 
-    def show(self):
-        th = TransactionHandler(self.username)
-        while True:
-            print("\n⁞ Menú de Transacciones")
-            print("1) ‟Crear cuenta”")
-            print("2) ‟Depositar ARS”")
-            print("3) ‟Comprar moneda”")
-            print("4) ‟Vender moneda”")
-            print("5) ‟Ver cuentas”")
-            print("6) ‟Volver al menú principal”")
-            option = input("Seleccione una opción: ").strip().upper().lower()
+    def crear_cuenta(self):
+        dialog = CrearCuentaDialog()
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            moneda = dialog.get_moneda()
+            if moneda:
+                if len(moneda) != 3 or not moneda.isalpha():
+                    QMessageBox.warning(self, "Error", "El código de moneda debe tener exactamente 3 letras")
+                    return
+                    
+                try:
+                    self.logic.create_account(moneda)
+                    QMessageBox.information(self, "Éxito", f"Cuenta en {moneda} creada exitosamente")
+                except ValueError as e:
+                    QMessageBox.critical(self, "Error", f"ERROR: {str(e)}")
 
-            if option == "1":
-                volver = th.create_account()
-                if volver is False:
-                    break
-            elif option == "2":
-                volver = th.deposit_ars()
-                if volver is False:
-                    break
-            elif option == "3":
-                volver = th.buy_currency()
-                if volver is False:
-                    break
-            elif option == "4":
-                volver = th.sell_currency()
-                if volver is False:
-                    break
-            elif option == "5":
-                volver = th.show_accounts()
-                if volver is False:
-                    break
-            elif option == "6":
-                break
-            else:
-                print("La opción ingresada no es válida, intentalo de nuevo")
+class CrearCuentaDialog(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.ui = CrearCuentaUI()
+        self.ui.setupUi(self)
+        
+    def get_moneda(self):
+        return self.ui.lineCodMonedaIngresar.text().strip().upper()
