@@ -3,6 +3,7 @@ from presentation.screens.menuTransacciones import Ui_MainWindow as TransactionU
 from presentation.screens.CrearCuenta import Ui_Dialog as CrearCuentaUI
 from presentation.screens.DepositarArs import Ui_Dialog as DepositarArsUI
 from presentation.screens.ComprarMoneda import Ui_Dialog as ComprarMonedaUI
+from presentation.screens.VenderMoneda import Ui_Dialog as VenderMonedaUI
 from business.transaction_logic import TransactionLogic
 from decimal import Decimal
 
@@ -19,6 +20,7 @@ class TransactionWindow(QMainWindow):
         self.ui.btnCrearCuenta.clicked.connect(self.crear_cuenta)
         self.ui.btnDepositar.clicked.connect(self.depositar_ars)
         self.ui.btnComprar.clicked.connect(self.comprar_moneda)
+        self.ui.btnVender.clicked.connect(self.vender_moneda)
 
     def crear_cuenta(self):
         dialog = CrearCuentaDialog()
@@ -73,6 +75,25 @@ class TransactionWindow(QMainWindow):
                 except ValueError as e:
                     QMessageBox.critical(self, "Error", f"ERROR: {str(e)}")
 
+    def vender_moneda(self):
+        dialog = VenderMonedaDialog()
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            moneda, monto = dialog.get_datos()
+            if moneda and monto:
+                try:
+                    monto_decimal = Decimal(str(monto))
+                    if monto_decimal <= 0:
+                        QMessageBox.warning(self, "Error", "El monto debe ser mayor a 0")
+                        return
+                    
+                    if len(moneda) != 3 or not moneda.isalpha():
+                        QMessageBox.warning(self, "Error", "El código de moneda debe tener 3 letras")
+                        return
+                    
+                    self.logic.sell_currency(moneda, monto_decimal)
+                    QMessageBox.information(self, "Éxito", f"Venta de {monto} {moneda} realizada exitosamente")
+                except ValueError as e:
+                    QMessageBox.critical(self, "Error", f"ERROR: {str(e)}")
 
 class CrearCuentaDialog(QDialog):
     def __init__(self):
@@ -83,7 +104,6 @@ class CrearCuentaDialog(QDialog):
     def get_moneda(self):
         return self.ui.lineCodMonedaIngresar.text().strip().upper()
 
-
 class DepositarArsDialog(QDialog):
     def __init__(self):
         super().__init__()
@@ -92,7 +112,6 @@ class DepositarArsDialog(QDialog):
         
     def get_monto(self):
         return self.ui.lineArsDepositar.text().strip()
-
 
 class ComprarMonedaDialog(QDialog):
     def __init__(self):
@@ -103,4 +122,15 @@ class ComprarMonedaDialog(QDialog):
     def get_datos(self):
         moneda = self.ui.lineMonedaCompra.text().strip().upper()
         monto = self.ui.lineArsMonedaComprar.text().strip()
+        return moneda, monto
+    
+class VenderMonedaDialog(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.ui = VenderMonedaUI()
+        self.ui.setupUi(self)
+        
+    def get_datos(self):
+        moneda = self.ui.lineMonedaVender.text().strip().upper()
+        monto = self.ui.lineMonedaVender_2.text().strip()
         return moneda, monto
