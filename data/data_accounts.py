@@ -1,6 +1,6 @@
 from data.orm import User, Account
 from decimal import Decimal
-from sqlobject import SO
+import sqlobject as SO
 
 class DataAccounts:
     def get_user(self, username):
