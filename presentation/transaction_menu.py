@@ -1,42 +1,169 @@
-from presentation.transaction_handler import TransactionHandler
+from PyQt6.QtWidgets import QMainWindow, QDialog, QMessageBox, QTableWidgetItem, QApplication
+from presentation.screens.menuTransacciones import Ui_MainWindow as TransactionUI
+from presentation.screens.CrearCuenta import Ui_Dialog as CrearCuentaUI
+from presentation.screens.DepositarArs import Ui_Dialog as DepositarArsUI
+from presentation.screens.ComprarMoneda import Ui_Dialog as ComprarMonedaUI
+from presentation.screens.VenderMoneda import Ui_Dialog as VenderMonedaUI
+from presentation.screens.VerCuentas import Ui_Dialog as VerCuentasUI
+from business.transaction_logic import TransactionLogic
+from decimal import Decimal
 
-class MenuTransaction:
+class TransactionWindow(QMainWindow):
     def __init__(self, username):
+        super().__init__()
+        self.ui = TransactionUI()
+        self.ui.setupUi(self)
         self.username = username
+        self.logic = TransactionLogic(username)
+        
+        self.setWindowTitle(f"Menú de Transacciones - {self.username}")
+        
+        self.ui.btnCrearCuenta.clicked.connect(self.crear_cuenta)
+        self.ui.btnDepositar.clicked.connect(self.depositar_ars)
+        self.ui.btnComprar.clicked.connect(self.comprar_moneda)
+        self.ui.btnVender.clicked.connect(self.vender_moneda)
+        self.ui.btnCuentas.clicked.connect(self.ver_cuentas)
+        self.ui.btnSalir.clicked.connect(self.cerrar_sesion)
 
-    def show(self):
-        th = TransactionHandler(self.username)
-        while True:
-            print("\n⁞ Menú de Transacciones")
-            print("1) ‟Crear cuenta”")
-            print("2) ‟Depositar ARS”")
-            print("3) ‟Comprar moneda”")
-            print("4) ‟Vender moneda”")
-            print("5) ‟Ver cuentas”")
-            print("6) ‟Volver al menú principal”")
-            option = input("Seleccione una opción: ").strip().upper().lower()
+    def crear_cuenta(self):
+        dialog = CrearCuentaDialog()
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            moneda = dialog.get_moneda()
+            if moneda:
+                if len(moneda) != 3 or not moneda.isalpha():
+                    QMessageBox.warning(self, "Error", "El código de moneda debe tener exactamente 3 letras")
+                    return
+                    
+                try:
+                    self.logic.create_account(moneda)
+                    QMessageBox.information(self, "Éxito", f"Cuenta en {moneda} creada exitosamente")
+                except ValueError as e:
+                    QMessageBox.critical(self, "Error", f"ERROR: {str(e)}")
 
-            if option == "1":
-                volver = th.create_account()
-                if volver is False:
-                    break
-            elif option == "2":
-                volver = th.deposit_ars()
-                if volver is False:
-                    break
-            elif option == "3":
-                volver = th.buy_currency()
-                if volver is False:
-                    break
-            elif option == "4":
-                volver = th.sell_currency()
-                if volver is False:
-                    break
-            elif option == "5":
-                volver = th.show_accounts()
-                if volver is False:
-                    break
-            elif option == "6":
-                break
-            else:
-                print("La opción ingresada no es válida, intentalo de nuevo")
+    def depositar_ars(self):
+        dialog = DepositarArsDialog()
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            monto = dialog.get_monto()
+            if monto:
+                try:
+                    monto_decimal = Decimal(str(monto))
+                    if monto_decimal <= 0:
+                        QMessageBox.warning(self, "Error", "El monto debe ser mayor a 0")
+                        return
+                    
+                    self.logic.deposit_ars(monto_decimal)
+                    QMessageBox.information(self, "Éxito", f"Depósito de ${monto} ARS realizado exitosamente")
+                except ValueError as e:
+                    QMessageBox.critical(self, "Error", f"ERROR: {str(e)}")
+                except Exception as e:
+                    QMessageBox.critical(self, "Error", f"Error inesperado: {str(e)}")
+
+    def comprar_moneda(self):
+        dialog = ComprarMonedaDialog()
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            moneda, monto = dialog.get_datos()
+            if moneda and monto:
+                try:
+                    monto_decimal = Decimal(str(monto))
+                    if monto_decimal <= 0:
+                        QMessageBox.warning(self, "Error", "El monto debe ser mayor a 0")
+                        return
+                    
+                    if len(moneda) != 3 or not moneda.isalpha():
+                        QMessageBox.warning(self, "Error", "El código de moneda debe tener 3 letras")
+                        return
+                    
+                    self.logic.buy_currency(moneda, monto_decimal)
+                    QMessageBox.information(self, "Éxito", f"Compra de {moneda} por ${monto} ARS realizada exitosamente")
+                except ValueError as e:
+                    QMessageBox.critical(self, "Error", f"ERROR: {str(e)}")
+
+    def vender_moneda(self):
+        dialog = VenderMonedaDialog()
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            moneda, monto = dialog.get_datos()
+            if moneda and monto:
+                try:
+                    monto_decimal = Decimal(str(monto))
+                    if monto_decimal <= 0:
+                        QMessageBox.warning(self, "Error", "El monto debe ser mayor a 0")
+                        return
+                    
+                    if len(moneda) != 3 or not moneda.isalpha():
+                        QMessageBox.warning(self, "Error", "El código de moneda debe tener 3 letras")
+                        return
+                    
+                    self.logic.sell_currency(moneda, monto_decimal)
+                    QMessageBox.information(self, "Éxito", f"Venta de {monto} {moneda} realizada exitosamente")
+                except ValueError as e:
+                    QMessageBox.critical(self, "Error", f"ERROR: {str(e)}")
+
+    def ver_cuentas(self):
+        try:
+            cuentas = self.logic.get_accounts()
+            dialog = VerCuentasDialog(cuentas)
+            dialog.exec()
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"ERROR al obtener cuentas: {str(e)}")
+
+    def cerrar_sesion(self):
+        from presentation.menu import LoginWindow 
+        self.close()
+        self.login_window = LoginWindow()
+        self.login_window.show()
+
+class CrearCuentaDialog(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.ui = CrearCuentaUI()
+        self.ui.setupUi(self)
+        
+    def get_moneda(self):
+        return self.ui.lineCodMonedaIngresar.text().strip().upper()
+
+class DepositarArsDialog(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.ui = DepositarArsUI()
+        self.ui.setupUi(self)
+        
+    def get_monto(self):
+        return self.ui.lineArsDepositar.text().strip()
+
+class ComprarMonedaDialog(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.ui = ComprarMonedaUI()
+        self.ui.setupUi(self)
+        
+    def get_datos(self):
+        moneda = self.ui.lineMonedaCompra.text().strip().upper()
+        monto = self.ui.lineArsMonedaComprar.text().strip()
+        return moneda, monto
+    
+class VenderMonedaDialog(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.ui = VenderMonedaUI()
+        self.ui.setupUi(self)
+        
+    def get_datos(self):
+        moneda = self.ui.lineMonedaVender.text().strip().upper()
+        monto = self.ui.lineMonedaVender_2.text().strip()
+        return moneda, monto
+
+class VerCuentasDialog(QDialog):
+    def __init__(self, cuentas):
+        super().__init__()
+        self.ui = VerCuentasUI()
+        self.ui.setupUi(self)
+        self.cargar_cuentas(cuentas)
+        self.ui.btnSalir.clicked.connect(self.close)
+        
+    def cargar_cuentas(self, cuentas):
+        self.ui.tableCuentas.setRowCount(len(cuentas))
+        for row, (moneda, saldo) in enumerate(cuentas.items()):
+            self.ui.tableCuentas.setItem(row, 0, QTableWidgetItem(moneda))
+            self.ui.tableCuentas.setItem(row, 1, QTableWidgetItem(saldo))
+        
+        self.ui.tableCuentas.resizeColumnsToContents()

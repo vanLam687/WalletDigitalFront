@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    font-family: Segoe UI, Arial;
+}</string>
+  </property>
+  <widget class="QTableWidget" name="tableCuentas">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>20</y>
+     <width>201</width>
+     <height>201</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QTableWidget {
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    font-size: 13px;
+    border: none;
+    gridline-color: #404040;
+    alternate-background-color: #252525;
+}
+QTableWidget::item {
+    padding: 6px;
+    border-bottom: 1px solid #2d2d2d;
+}
+QTableWidget::item:selected {
+    background-color: #264f78;
+    color: white;
+}
+QHeaderView::section {
+    background-color: #333333;
+    color: #d4d4d4;
+    border: none;
+    padding: 8px;
+    font-weight: bold;
+    font-size: 13px;
+}
+QTableWidget QScrollBar:vertical {
+    background-color: #2d2d2d;
+    width: 15px;
+}
+QTableWidget QScrollBar:horizontal {
+    background-color: #2d2d2d;
+    height: 15px;
+}
+QTableWidget QScrollBar::handle:vertical {
+    background-color: #404040;
+    border-radius: 7px;
+}
+QTableWidget QScrollBar::handle:horizontal {
+    background-color: #404040;
+    border-radius: 7px;
+}
+QTableWidget QScrollBar::handle:vertical:hover,
+QTableWidget QScrollBar::handle:horizontal:hover {
+    background-color: #555555;
+}</string>
+   </property>
+   <column>
+    <property name="text">
+     <string>Moneda</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Saldo</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QPushButton" name="btnSalir">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>240</y>
+     <width>201</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    background-color: #666666;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    min-width: 100px;
+}
+QPushButton:hover {
+    background-color: #777777;
+}
+QPushButton:pressed {
+    background-color: #555555;
+}</string>
+   </property>
+   <property name="text">
+    <string>Salir</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
