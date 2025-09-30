@@ -12,22 +12,13 @@ class LoginWindow(QWidget):
         
         self.ui.btnRegistro.clicked.connect(self.open_register)
         self.ui.btnIngresar.clicked.connect(self.login)
-        
         self.ui.lineContra.setEchoMode(self.ui.lineContra.EchoMode.Password)
 
-    def ask_retry(self, message):
-        reply = QMessageBox.question(self, "Reintentar", message, QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
-        return reply == QMessageBox.StandardButton.Yes
-    
     def open_register(self):
-        self.register_window = RegisterWindow(self)
-        self.register_window.show()
-        self.hide()
-    
-    def open_transaction_menu(self, username):
-        self.transaction_window = TransactionWindow(username, self)
-        self.transaction_window.show()
-        self.hide()
+        self.register_window = RegisterWindow()
+        res = self.register_window.exec()
+        if res == QDialog.DialogCode.Accepted:
+            pass
 
     def login(self):
         username = self.ui.lineNameUser.text().strip().lower()
@@ -41,36 +32,24 @@ class LoginWindow(QWidget):
             logic = UserLogic(username, password)
             logic.login_user()
             self.open_transaction_menu(username)
-
+            
         except ValueError as e:
             QMessageBox.critical(self, "Error", f"ERROR: {str(e)}")
-            if self.ask_retry("¿Quieres intentarlo nuevamente?"):
-                self.ui.lineNameUser.clear()
-                self.ui.lineContra.clear()
-                self.ui.lineNameUser.setFocus()
-            else:
-                self.close()
+
+    def open_transaction_menu(self, username):
+        self.transaction_window = TransactionWindow(username)
+        self.transaction_window.show()
+        self.hide()
 
 class RegisterWindow(QDialog):
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self):
+        super().__init__()
         self.ui = RegisterUI()
         self.ui.setupUi(self)
-        self.parent_window = parent
         
         self.ui.btnRegistrarse.clicked.connect(self.register)
-        
         self.ui.lineContraReg.setEchoMode(self.ui.lineContraReg.EchoMode.Password)
         self.ui.lineContraReg2.setEchoMode(self.ui.lineContraReg2.EchoMode.Password)
-    
-    def ask_retry(self, message):
-        reply = QMessageBox.question(self, "Reintentar", message, QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
-        return reply == QMessageBox.StandardButton.Yes
-
-    def closeEvent(self, event):
-        if self.parent_window:
-            self.parent_window.show()
-        event.accept()
         
     def register(self):
         username = self.ui.lineNameUserReg.text().strip().lower()
@@ -85,35 +64,17 @@ class RegisterWindow(QDialog):
             logic = UserLogic(username, password)
             logic.create_user(password2)
             QMessageBox.information(self, "Éxito", "Registro exitoso")
-            
-            self.close()
-            if self.parent_window:
-                self.parent_window.show()
+            self.accept()
             
         except ValueError as e:
             QMessageBox.critical(self, "Error", f"ERROR: {str(e)}")
-            if self.ask_retry("¿Quieres intentarlo nuevamente?"):
-                self.ui.lineNameUserReg.clear()
-                self.ui.lineContraReg.clear()
-                self.ui.lineContraReg2.clear()
-                self.ui.lineNameUserReg.setFocus()
 
 class TransactionWindow(QMainWindow):
-    def __init__(self, username, parent=None):
+    def __init__(self, username):
         super().__init__()
         self.ui = TransactionUI()
         self.ui.setupUi(self)
         self.username = username
-        self.parent_window = parent
         
         self.setWindowTitle(f"Menú de Transacciones - {self.username}")
-        
-        self.ui.btnSalir.clicked.connect(self.cerrar_sesion)
-
-    def cerrar_sesion(self):
-        self.close()
-    
-    def closeEvent(self, event):
-        if self.parent_window:
-            self.parent_window.show()
-        event.accept()
+        self.ui.btnSalir.clicked.connect(self.close)
