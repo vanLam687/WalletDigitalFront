@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>298</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    font-family: Segoe UI, Arial;
+}</string>
+  </property>
+  <widget class="QDialogButtonBox" name="buttonBox">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>220</y>
+     <width>291</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    background-color: #666666;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    min-width: 100px;
+}
+QPushButton:hover {
+    background-color: #777777;
+}
+QPushButton:pressed {
+    background-color: #555555;
+}</string>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <property name="standardButtons">
+    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   </property>
+  </widget>
+  <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>30</y>
+     <width>211</width>
+     <height>156</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="lblNameUser">
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+    background-color: transparent;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+}</string>
+      </property>
+      <property name="text">
+       <string>Moneda a comprar:</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="lineMonedaCompra">
+      <property name="styleSheet">
+       <string notr="true">QLineEdit {
+    background-color: #2d2d2d;
+    border: 2px solid #404040;
+    border-radius: 6px;
+    padding: 12px;
+    color: #ffffff;
+    font-size: 14px;
+    selection-background-color: #404040;
+}
+QLineEdit:focus {
+    border: 2px solid #666666;
+    background-color: #252525;
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="lblNameUser_2">
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+    background-color: transparent;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+}</string>
+      </property>
+      <property name="text">
+       <string>Monto en ARS a utilizar:</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="lineArsMonedaComprar">
+      <property name="styleSheet">
+       <string notr="true">QLineEdit {
+    background-color: #2d2d2d;
+    border: 2px solid #404040;
+    border-radius: 6px;
+    padding: 12px;
+    color: #ffffff;
+    font-size: 14px;
+    selection-background-color: #404040;
+}
+QLineEdit:focus {
+    border: 2px solid #666666;
+    background-color: #252525;
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>Dialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>Dialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
